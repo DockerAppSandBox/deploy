@@ -1,0 +1,70 @@
+
+services:
+  mydb:
+    image: postgres
+    container_name: bdd
+    ports:
+      - "${BDD_PORT}:${BDD_PORT}"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      mynetwork: 
+        ipv4_address: 172.28.0.5
+  
+  python-http-server:
+    image: ghcr.io/dockerappsandbox/pythonserver:pre-prod
+    ports:
+      - "${SERVER_PORT}:${SERVER_PORT}"
+    depends_on:
+      - mydb
+    volumes:
+      - ./images:/app/images
+    networks:
+      mynetwork: 
+        ipv4_address: 172.28.0.4
+
+  front:
+    image: ghcr.io/dockerappsandbox/front:pre-prod
+    volumes:
+     - ../src:/app/src
+      - ../node_modules:/app/node_modules
+    ports:
+    - "${FRONT_PORT}:${FRONT_PORT}"
+    depends_on:
+      - mydb
+      - python-http-server
+    environment:
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+      NEXT_PUBLIC_SERVER_PYTHON_URL: ${NEXT_PUBLIC_SERVER_PYTHON_URL}
+    networks:
+      mynetwork:
+        ipv4_address: 172.28.0.3
+
+  back:
+    image: ghcr.io/dockerappsandbox/back:dev
+    volumes:
+      - ./src:/app/src
+      - ./node_modules:/app/node_modules
+    ports: 
+      - "${BACK_PORT}:${BACK_PORT}"
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      JWT_SECRET: ${JWT_SECRET}
+    depends_on:
+      - mydb
+      - python-http-server
+      - front
+    networks:
+      mynetwork:
+        ipv4_address: 172.28.0.2
+
+networks:
+  mynetwork:
+    external: true
+
+volumes:
+  postgres_data:
+    driver: local

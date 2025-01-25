@@ -1,0 +1,23 @@
+# Using and image with node 20.10.0 lite
+FROM node:20.10.0-alpine
+
+# Install pnpm
+RUN npm install -g pnpm
+
+# Create working directory
+WORKDIR /app
+
+# Copy prisma files
+COPY ./Back/prisma ./prisma
+
+COPY ./Front/package.json ./package.json
+
+# Copy all rest of the files
+COPY ./Back/. .
+
+# Install dependencies
+RUN npm install
+
+RUN chmod +x node_modules/.bin/prisma
+# Start the api in dev mode
+CMD npm run build-container
