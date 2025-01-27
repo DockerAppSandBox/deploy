@@ -41,7 +41,7 @@ The deployment includes the following services:
 
 - **Frontend:** A web-based user interface.
 - **Backend:** The core application logic.
-- **Python Server:** Handles specific operations and processing.
+- **Python Server:** Host the images.
 - **Database:** Stores and manages application data.
 
 ## Project Structure
@@ -181,5 +181,4 @@ If you encounter any issues, consider the following:
 
 ---
 
-Feel free to contribute or raise issues to improve the deployment process!
-
+and that's it, enjoy! 🎉!
