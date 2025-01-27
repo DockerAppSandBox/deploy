@@ -47,7 +47,7 @@ The deployment includes the following services:
 ## Project Structure
 
 The following image provides an overview of the project structure:
-
+![Cover](https://github.com/DockerAppSandBox/deploy/blob/main/public/structure.png)
 
 
 ## Docker Compose Explanation
