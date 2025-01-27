@@ -22,14 +22,14 @@ services:
       - mynetwork
   
   python-server:
-    image: ghcr.io/dockerappsandbox/pythonserver:pre-prod
+    image: ghcr.io/dockerappsandbox/pythonserver:prod
     ports:
       - "${SERVER_PORT}:${SERVER_PORT}"
     depends_on:
       - mydb
 
   front:
-    image: ghcr.io/dockerappsandbox/front:pre-prod
+    image: ghcr.io/dockerappsandbox/front:prod
     ports:
     - "${FRONT_PORT}:${FRONT_PORT}"
     depends_on:
@@ -40,7 +40,7 @@ services:
       NEXT_PUBLIC_SERVER_PYTHON_URL: ${NEXT_PUBLIC_SERVER_PYTHON_URL}
 
   back:
-    image: ghcr.io/dockerappsandbox/back:pre-prod
+    image: ghcr.io/dockerappsandbox/back:prod
     ports: 
       - "${BACK_PORT}:${BACK_PORT}"
     environment:
